@@ -33,7 +33,7 @@ OBJECTRON AAR / Native Library Guide
     
     3)app/src/main/assets/object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
       
-       app/src/main/assets/object_detection_3d_sneakers.tflite
+      app/src/main/assets/object_detection_3d_sneakers.tflite
      
         Mediapipe의 Object Detection 을 수행하는 Core Model. 인식 결과를 물체 ID로 반환
   
@@ -142,29 +142,29 @@ OBJECTRON AAR / Native Library Guide
     
     1)필요한 Components
     
-        a)com.google.mediapipe.components
-        
-        CameraHelper
-        
-        CameraXPreviewHelper : CameraX를 통한 camera access 관리
-        
-        ExternalTextureConverter : GL_TEXTURE_EXTERNAL_OES 를 android camera 에서 regular texture로 바꾸어 frame processore와 mediapipe graph에서 사용될 수 있도록 함
-        
-        FrameProcessor : camera-preview frames을 mediapipe graph에 보내 처리하고 처리된 frames을 Surface에 display. components.TextureFrameProcessor, components.AudioDataProcessor 로 구성되어 mediapipe graph에 데이터를 송신
-        
-        PermissionHelper
-        
-        b)com.google.mediapipe.framework
-        
-        AndroidAssetUtil
-        
-        c)com.google.mediapipe.glutil
-        
-        EglManager : EGLContext 생성 및 관리
-        
-        d)android.graphics.SurfaceTexture : camera-preview frames가 있는 장소
-        
-        e)android.view.SurfaceView : camera-preview frames 이 mediapipe graph에 의해 처리
+            a)com.google.mediapipe.components
+
+            CameraHelper
+
+            CameraXPreviewHelper : CameraX를 통한 camera access 관리
+
+            ExternalTextureConverter : GL_TEXTURE_EXTERNAL_OES 를 android camera 에서 regular texture로 바꾸어 frame processore와 mediapipe graph에서 사용될 수 있도록 함
+
+            FrameProcessor : camera-preview frames을 mediapipe graph에 보내 처리하고 처리된 frames을 Surface에 display. components.TextureFrameProcessor, components.AudioDataProcessor 로 구성되어 mediapipe graph에 데이터를 송신
+
+            PermissionHelper
+
+            b)com.google.mediapipe.framework
+
+            AndroidAssetUtil
+
+            c)com.google.mediapipe.glutil
+
+            EglManager : EGLContext 생성 및 관리
+
+            d)android.graphics.SurfaceTexture : camera-preview frames가 있는 장소
+
+            e)android.view.SurfaceView : camera-preview frames 이 mediapipe graph에 의해 처리
 
     2)작업 실행 순서
     

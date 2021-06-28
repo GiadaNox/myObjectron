@@ -167,26 +167,50 @@ OBJECTRON AAR / Native Library Guide
         e)android.view.SurfaceView : camera-preview frames 이 mediapipe graph에 의해 처리
 
     2)작업 실행 순서
-      Step 1. 화면 그리기
-        a) 화면에 res > layout > activity_main.xml 파싱하여 View 그리기
-        b) 새로운 SurefaceView 생성하여 View 정보를 Processor, Converter에 전달
-      Step 2. Binary Graph가 App Asset에 접근할 수 있도록 Manager 설정
-        a) Native Asset Manager 시작
-        b) 새로운 EglManager 시작
-        c) 새로운 Frame Processor 생성
-          Frame Processor 에 아래 정보를 전달
-          Android Context
-          parent Native Context
-          BINARY_GRAPH_NAME = mobile_gpu.binarypb //Graph의 binary representation을 포함하는 파일 이름
-          INPUT_VIDEO_STREAM_NAME = "input_video" //input video frame을 받을 Graph input stream 
-          OUTPUT_VIDEO_STREAM_NAME = "output_video" // outpu frame이 생성될 output stream
-          d) Processor 설정
-          Processor에 들어온 SurfaceView 결과 전달 후, 상하반전
-          ** Camera Preview Frame을 상하 반전 시켜 Processor에 전달하여야 한다.
-          OpenGL 이 이미지의 origin이 좌하단에 있다고 가정하는 것과 달리, Mediapipe는 좌상단에 있다고 가정하고 처리하기 때문.
-      Step3. cameraPermission 확인
-      Step4. 새로운 converter 생성
-        a) converter 상하반전
-        b) converter가 processor를 사용하도록 설정
-      Step 5. 카메라 켜기 (permission grant necessary)
-        a) 후면 카메라 켜기
+    
+       Step 1. 화면 그리기
+        
+            a) 화면에 res > layout > activity_main.xml 파싱하여 View 그리기
+            
+            b) 새로운 SurefaceView 생성하여 View 정보를 Processor, Converter에 전달
+      
+       Step 2. Binary Graph가 App Asset에 접근할 수 있도록 Manager 설정
+       
+            a) Native Asset Manager 시작
+            
+            b) 새로운 EglManager 시작
+            
+            c) 새로운 Frame Processor 생성
+                  
+                  Frame Processor 에 아래 정보를 전달
+                  
+                  Android Context
+                 
+                  parent Native Context
+                  
+                  BINARY_GRAPH_NAME = mobile_gpu.binarypb //Graph의 binary representation을 포함하는 파일 이름
+                  
+                  INPUT_VIDEO_STREAM_NAME = "input_video" //input video frame을 받을 Graph input stream 
+                  
+                  OUTPUT_VIDEO_STREAM_NAME = "output_video" // outpu frame이 생성될 output stream
+          
+            d) Processor 설정
+                
+                  Processor에 들어온 SurfaceView 결과 전달 후, 상하반전
+          
+                  ** Camera Preview Frame을 상하 반전 시켜 Processor에 전달하여야 한다.
+                
+                  OpenGL 이 이미지의 origin이 좌하단에 있다고 가정하는 것과 달리, Mediapipe는 좌상단에 있다고 가정하고 처리하기 때문.
+      
+       Step3. cameraPermission 확인
+      
+       Step4. 새로운 converter 생성
+             
+            a) converter 상하반전
+            
+            b) converter가 processor를 사용하도록 설정
+      
+       Step 5. 카메라 켜기 (permission grant necessary)
+       
+            a) 후면 카메라 켜기
+            

@@ -7,14 +7,14 @@ OBJECTRON AAR / Native Library Guide
     Google Mediapipe의 3D 물체인식 module Objectron을 Android에 사용하기 위한 Project
   
     Mediapipe GPU Pipeline : 
-  
-    GPU에서 Tensorflow Lite을 사용해 3D Object Detection을 실행하는 Mediapipe Graph로,
-    
-    Mediapipe Binary Graph 가 빌드 된 안드로이드 용 AAR 파일과 물체 인식을 수행하는 tensorflow lite 모델, 
-    
-    인식한 모델의 ID와 물체 명을 연결하는 Label Map, Computer Vision 오픈 라이브러리 openCV 를 이용하여 
-    
-    카메라로 들어오는 Input Video를 입력으로 받아 3D Object Detection을 수행한 후 결과를 Output video와 인식 결과를 표현하는 Bounding Box로 반환한다.
+
+        GPU에서 Tensorflow Lite을 사용해 3D Object Detection을 실행하는 Mediapipe Graph로,
+
+        Mediapipe Binary Graph 가 빌드 된 안드로이드 용 AAR 파일과 물체 인식을 수행하는 tensorflow lite 모델, 
+
+        인식한 모델의 ID와 물체 명을 연결하는 Label Map, Computer Vision 오픈 라이브러리 openCV 를 이용하여 
+
+        카메라로 들어오는 Input Video를 입력으로 받아 3D Object Detection을 수행한 후 결과를 Output video와 인식 결과를 표현하는 Bounding Box로 반환한다.
     
 
 2. Major Implementations

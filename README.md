@@ -4,9 +4,9 @@ OBJECTRON AAR / Native Library Guide
 
 1. Overview
 
-  Google Mediapipe의 3D 물체인식 module Objectron을 Android에 사용하기 위한 Project
+    Google Mediapipe의 3D 물체인식 module Objectron을 Android에 사용하기 위한 Project
   
-  Mediapipe GPU Pipeline : 
+    Mediapipe GPU Pipeline : 
   
     GPU에서 Tensorflow Lite을 사용해 3D Object Detection을 실행하는 Mediapipe Graph로,
     

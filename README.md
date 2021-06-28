@@ -18,25 +18,39 @@ OBJECTRON AAR / Native Library Guide
     
 
 2. Major Implementations
-  Google Mediapipe에서 물체 인식을 위해 제공하는 Specification File 혹은, Android 용으로 Build된 File
-  reference : https://github.com/GiadaNox/mediapipe/tree/master/mediapipe/examples/android/src/java/com/google/mediapipe/apps/objectdetection3d
-  1)app/libs/mediapipe_objectron.aar
-    Mediapipe가 물체인식을 하기 위해 필요한 Mobile 용 Calculator (계산에 필요한 class 및 function  으로 구성된 .cc , .proto 파일) 를 Android 용으로 bazel 빌드한 것
-  2)app/src/main/assets/mobile_gpu_binary_graph.binarypb
-    Mediapipe 의 Data Pipeline Manager 역할을 하는 Native Library. 이 파일이 카메라로 부터 Input Video 영상을 받아 Object Detection 을 수행하고 결과를 반환하도록 한다.
-  3)app/src/main/assets/object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
-    app/src/main/assets/object_detection_3d_sneakers.tflite
-    Mediapipe의 Object Detection 을 수행하는 Core Model. 인식 결과를 물체 ID로 반환
-  4)app/src/main/assets/object_detection_oidv4_labelmap.txt
-    위의 Tensorflow Lite 모델이 인식한 물체ID를 이름으로 변경할 수 있도록 Mapping을 제공
-  5)app/src/main/assets/texture.jpg
-    app/src/main/assets/model.obj.uuu
-    app/src/main/assets/classic_colors.png
-    app/src/main/assets/box.obj.uuu
-    물체 인식 결과의 시각적 특징을 결정하는 요소
-  6)app/src/main/jniLibs/arm64-v8a/libopencv_java3.so
-    app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
-    Java 용 OpenCV
+
+    Google Mediapipe에서 물체 인식을 위해 제공하는 Specification File 혹은, Android 용으로 Build된 File
+    
+    reference : https://github.com/GiadaNox/mediapipe/tree/master/mediapipe/examples/android/src/java/com/google/mediapipe/apps/objectdetection3d
+    
+    1)app/libs/mediapipe_objectron.aar
+        
+        Mediapipe가 물체인식을 하기 위해 필요한 Mobile 용 Calculator (계산에 필요한 class 및 function  으로 구성된 .cc , .proto 파일) 를 Android 용으로 bazel 빌드한 것
+  
+    2)app/src/main/assets/mobile_gpu_binary_graph.binarypb
+        
+        Mediapipe 의 Data Pipeline Manager 역할을 하는 Native Library. 이 파일이 카메라로 부터 Input Video 영상을 받아 Object Detection 을 수행하고 결과를 반환하도록 한다.
+    
+    3)app/src/main/assets/object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
+        
+        app/src/main/assets/object_detection_3d_sneakers.tflite
+        Mediapipe의 Object Detection 을 수행하는 Core Model. 인식 결과를 물체 ID로 반환
+  
+    4)app/src/main/assets/object_detection_oidv4_labelmap.txt
+        
+        위의 Tensorflow Lite 모델이 인식한 물체ID를 이름으로 변경할 수 있도록 Mapping을 제공
+    
+    5)app/src/main/assets/texture.jpg
+      app/src/main/assets/model.obj.uuu
+      app/src/main/assets/classic_colors.png
+      app/src/main/assets/box.obj.uuu
+      
+        물체 인식 결과의 시각적 특징을 결정하는 요소
+  
+    6)app/src/main/jniLibs/arm64-v8a/libopencv_java3.so
+      app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
+        
+        Java 용 OpenCV
     
 3. Input Data Flow
   reference : https://github.com/GiadaNox/myObjectron/blob/main/app/src/main/java/com/example/myobjectron/MainActivity.java

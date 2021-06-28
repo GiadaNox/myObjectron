@@ -32,8 +32,9 @@ OBJECTRON AAR / Native Library Guide
         Mediapipe 의 Data Pipeline Manager 역할을 하는 Native Library. 이 파일이 카메라로 부터 Input Video 영상을 받아 Object Detection 을 수행하고 결과를 반환하도록 한다.
     
     3)app/src/main/assets/object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
-        
-        app/src/main/assets/object_detection_3d_sneakers.tflite
+      
+      app/src/main/assets/object_detection_3d_sneakers.tflite
+     
         Mediapipe의 Object Detection 을 수행하는 Core Model. 인식 결과를 물체 ID로 반환
   
     4)app/src/main/assets/object_detection_oidv4_labelmap.txt
@@ -41,13 +42,17 @@ OBJECTRON AAR / Native Library Guide
         위의 Tensorflow Lite 모델이 인식한 물체ID를 이름으로 변경할 수 있도록 Mapping을 제공
     
     5)app/src/main/assets/texture.jpg
+      
       app/src/main/assets/model.obj.uuu
+      
       app/src/main/assets/classic_colors.png
+      
       app/src/main/assets/box.obj.uuu
       
         물체 인식 결과의 시각적 특징을 결정하는 요소
   
     6)app/src/main/jniLibs/arm64-v8a/libopencv_java3.so
+      
       app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
         
         Java 용 OpenCV

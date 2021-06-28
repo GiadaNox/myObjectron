@@ -33,7 +33,7 @@ OBJECTRON AAR / Native Library Guide
     
     3)app/src/main/assets/object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
       
-      app/src/main/assets/object_detection_3d_sneakers.tflite
+       app/src/main/assets/object_detection_3d_sneakers.tflite
      
         Mediapipe의 Object Detection 을 수행하는 Core Model. 인식 결과를 물체 ID로 반환
   
@@ -43,17 +43,17 @@ OBJECTRON AAR / Native Library Guide
     
     5)app/src/main/assets/texture.jpg
       
-      app/src/main/assets/model.obj.uuu
+       app/src/main/assets/model.obj.uuu
       
-      app/src/main/assets/classic_colors.png
+       app/src/main/assets/classic_colors.png
       
-      app/src/main/assets/box.obj.uuu
+       app/src/main/assets/box.obj.uuu
       
         물체 인식 결과의 시각적 특징을 결정하는 요소
   
     6)app/src/main/jniLibs/arm64-v8a/libopencv_java3.so
       
-      app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
+       app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
         
         Java 용 OpenCV
     

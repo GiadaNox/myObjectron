@@ -43,85 +43,130 @@ OBJECTRON AAR / Native Library Guide
     
     5)app/src/main/assets/texture.jpg
       
-       app/src/main/assets/model.obj.uuu
+      app/src/main/assets/model.obj.uuu
       
-       app/src/main/assets/classic_colors.png
+      app/src/main/assets/classic_colors.png
       
-       app/src/main/assets/box.obj.uuu
+      app/src/main/assets/box.obj.uuu
       
         물체 인식 결과의 시각적 특징을 결정하는 요소
   
     6)app/src/main/jniLibs/arm64-v8a/libopencv_java3.so
       
-       app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
+      app/src/main/jniLibs/armeabi-v7a/libopencv_java3.so
         
         Java 용 OpenCV
     
 3. Input Data Flow
-  reference : https://github.com/GiadaNox/myObjectron/blob/main/app/src/main/java/com/example/myobjectron/MainActivity.java
-  Binary Graph는 Input Video와 aar파일, 모델, specification 정보를 사용하여 물체 인식을 수행하고, 결과로 bounding box가 포함된 Output Video를 제공한다.
-  Binary Graph : mobile_gpu_binary_graph.binarypb
-  Graph 로 들어가는 Input Video Stream : "input_video"
-  Graph 에서 나오는 Output Video Stream : "output_video"
-  ** Binary Graph 가 해당 이름을 사용하므로, 반드시 변수 이름은 "input_video", "output_video"로 설정해야 함.
-  그 외에 input side packet에 넣어 물체 인식 및 결과 visualization을 위해 사용하는 정보 : "texture.jpg", "model.obj.uuu", "classic_colors.png", "box.obj.uuu"
-
-  아래는 Input Video부터 진행되는 data flow로, 작업은 크게 물체 인식을 수행하는 Objectron GPU Subgraph와 인식한 물체의 움직임을 tracking하는 Objectron Tracking GPU Subgraph 로 나뉜다. 
-  Objectron GPU Subgraph는 물체 인식 core 엔진인 Objectron OBject Detection GPU Subgraph와 인식 결과를 박스로 표시해주는 Box Landmark Localization GPU Subgraph로 구성되며, 
-  각 Subgraph 의 input/output stream 정보는 아래와 같다. 
+    reference : https://github.com/GiadaNox/myObjectron/blob/main/app/src/main/java/com/example/myobjectron/MainActivity.java
   
-  각 Subgraph에 사용되는 Calculator 정보는 아래 BUILD파일에서 확인할 수 있다. 
-  https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/BUILD
+    Binary Graph는 Input Video와 aar파일, 모델, specification 정보를 사용하여 물체 인식을 수행하고, 결과로 bounding box가 포함된 Output Video를 제공한다.
+  
+    Binary Graph : mobile_gpu_binary_graph.binarypb
+  
+    Graph 로 들어가는 Input Video Stream : "input_video"
+    
+    Graph 에서 나오는 Output Video Stream : "output_video"
+  
+    ** Binary Graph 가 해당 이름을 사용하므로, 반드시 변수 이름은 "input_video", "output_video"로 설정해야 함.
+    
+    그 외에 input side packet에 넣어 물체 인식 및 결과 visualization을 위해 사용하는 정보 : "texture.jpg", "model.obj.uuu", "classic_colors.png", "box.obj.uuu"
 
-  1)Objectron GPU Subgraph
-  (아래 Objectron Object Detection GPU Subgraph, Box Landmark Localization GPU Subgraph 를 포함) 
-  https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/objectron_gpu.pbtxt
-  input : "IMAGE_GPU:image"
-  input_side_packet:"LABELS_CSV:allowed_labels"
-  input_side_packet:"MAX_NUM_OBJECTS:max_num_objects"
-  output:"FRAME_ANNOTATION:detected_objects"
+    아래는 Input Video부터 진행되는 data flow로, 작업은 크게 물체 인식을 수행하는 Objectron GPU Subgraph와 인식한 물체의 움직임을 tracking하는 Objectron Tracking GPU Subgraph 로 나뉜다. 
+    
+    Objectron GPU Subgraph는 물체 인식 core 엔진인 Objectron OBject Detection GPU Subgraph와 인식 결과를 박스로 표시해주는 Box Landmark Localization GPU Subgraph로 구성되며, 각 Subgraph 의 input/output stream 정보는 아래와 같다. 
+  
+    각 Subgraph에 사용되는 Calculator 정보는 아래 BUILD파일에서 확인할 수 있다. 
+  
+    https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/BUILD
 
-    a)Objectron Object Detection GPU Subgraph
-      tensorflow lite 모델과 mapping 정보를 사용하여 물체 인식 후, 최대 인식 가능 갯수와 인식 threshold에 따라 물체 인식 결과를 반환한다. 
-      https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/object_detection_oid_v4_gpu.pbtxt
-      input : "IMAGE_GPU:input_video"
-      ** 입력 input video 은 기본적으로 unsigned char 로 되어 있어, image format 은 channel 수에만 영향을 받는다.
-      input_side_packet : "LABEDLS_CSV:allowed_labels"
-      output : "DETECTIONS:detections"
-      사용하는 물체 인식 모델 : object_detection_oidv4_labelmap.txt
-      사용하는 매핑 정보 : object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
+    1)Objectron GPU Subgraph
+      
+      (아래 Objectron Object Detection GPU Subgraph, Box Landmark Localization GPU Subgraph 를 포함) 
+      
+      https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/objectron_gpu.pbtxt
+      
+          input : "IMAGE_GPU:image"
 
-    b)Box Landmark Localization GPU Subgraph
-      tensorflow lite 모델을 실행하여 물체 인식 box/score/key points를 결과로 받는다
-      https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/box_landmark_gpu.pbtxt
-      input : "IMAGE:image"
-      input : "NORM_RECT:box_rect"
-      output : "NORM_LANDMARKS:box_landmarks"
-      사용하는 모델 : object_detection_3d.tflite
+          input_side_packet:"LABELS_CSV:allowed_labels"
 
-  2)Objectron Tracking GPU Subgraph
+          input_side_packet:"MAX_NUM_OBJECTS:max_num_objects"
+
+          output:"FRAME_ANNOTATION:detected_objects"
+
+    1-1)Objectron Object Detection GPU Subgraph
+    
+    tensorflow lite 모델과 mapping 정보를 사용하여 물체 인식 후, 최대 인식 가능 갯수와 인식 threshold에 따라 물체 인식 결과를 반환한다. 
+    
+    https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/object_detection_oid_v4_gpu.pbtxt
+    
+        input : "IMAGE_GPU:input_video"
+
+        ** 입력 input video 은 기본적으로 unsigned char 로 되어 있어, image format 은 channel 수에만 영향을 받는다.
+
+        input_side_packet : "LABEDLS_CSV:allowed_labels"
+
+        output : "DETECTIONS:detections"
+
+        사용하는 물체 인식 모델 : object_detection_oidv4_labelmap.txt
+
+        사용하는 매핑 정보 : object_detection_ssd_mobilenetv2_oidv4_fp16.tflite
+
+    1-2)Box Landmark Localization GPU Subgraph
+    
+    tensorflow lite 모델을 실행하여 물체 인식 box/score/key points를 결과로 받는다.
+    
+    https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/box_landmark_gpu.pbtxt
+    
+        input : "IMAGE:image"
+
+        input : "NORM_RECT:box_rect"
+
+        output : "NORM_LANDMARKS:box_landmarks"
+
+        사용하는 모델 : object_detection_3d.tflite
+
+    2)Objectron Tracking GPU Subgraph
+    
     https://github.com/GiadaNox/mediapipe/blob/master/mediapipe/modules/objectron/objectron_tracking_1stage_gpu.pbtxt
-    input : "FRAME_ANNOTATION:objects"
-    input : "IMAGE_GPU:input_video"
-    output : "LIFTED_FRAME_ANNOTATION:lifted_tracked_objects"
+    
+        input : "FRAME_ANNOTATION:objects"
+
+        input : "IMAGE_GPU:input_video"
+
+        output : "LIFTED_FRAME_ANNOTATION:lifted_tracked_objects"
 
  4. Android Studio 를 사용하여 Mediapipe 실행하는 방법
-  reference : https://github.com/GiadaNox/myObjectron/blob/main/app/src/main/java/com/example/myobjectron/MainActivity.java
-  1)필요한 Components
-      a)com.google.mediapipe.components
-        CameraHelper
-        CameraXPreviewHelper : CameraX를 통한 camera access 관리
-        ExternalTextureConverter : GL_TEXTURE_EXTERNAL_OES 를 android camera 에서 regular texture로 바꾸어 frame processore와 mediapipe graph에서 사용될 수 있도록 함
-        FrameProcessor : camera-preview frames을 mediapipe graph에 보내 처리하고 처리된 frames을 Surface에 display. components.TextureFrameProcessor, components.AudioDataProcessor 로 구성되어 mediapipe graph에 데이터를 송신
-        PermissionHelper
-      b)com.google.mediapipe.framework
-        AndroidAssetUtil
-      c)com.google.mediapipe.glutil
-        EglManager : EGLContext 생성 및 관리
-      d)android.graphics.SurfaceTexture : camera-preview frames가 있는 장소
-      e)android.view.SurfaceView : camera-preview frames 이 mediapipe graph에 의해 처리
 
-  2)작업 실행 순서
+    reference : https://github.com/GiadaNox/myObjectron/blob/main/app/src/main/java/com/example/myobjectron/MainActivity.java
+    
+    1)필요한 Components
+    
+        a)com.google.mediapipe.components
+        
+        CameraHelper
+        
+        CameraXPreviewHelper : CameraX를 통한 camera access 관리
+        
+        ExternalTextureConverter : GL_TEXTURE_EXTERNAL_OES 를 android camera 에서 regular texture로 바꾸어 frame processore와 mediapipe graph에서 사용될 수 있도록 함
+        
+        FrameProcessor : camera-preview frames을 mediapipe graph에 보내 처리하고 처리된 frames을 Surface에 display. components.TextureFrameProcessor, components.AudioDataProcessor 로 구성되어 mediapipe graph에 데이터를 송신
+        
+        PermissionHelper
+        
+        b)com.google.mediapipe.framework
+        
+        AndroidAssetUtil
+        
+        c)com.google.mediapipe.glutil
+        
+        EglManager : EGLContext 생성 및 관리
+        
+        d)android.graphics.SurfaceTexture : camera-preview frames가 있는 장소
+        
+        e)android.view.SurfaceView : camera-preview frames 이 mediapipe graph에 의해 처리
+
+    2)작업 실행 순서
       Step 1. 화면 그리기
         a) 화면에 res > layout > activity_main.xml 파싱하여 View 그리기
         b) 새로운 SurefaceView 생성하여 View 정보를 Processor, Converter에 전달
